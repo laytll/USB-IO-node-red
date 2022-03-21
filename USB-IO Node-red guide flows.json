@@ -1,0 +1,273 @@
+[
+    {
+        "id": "6c5397a89a39371e",
+        "type": "debug",
+        "z": "34204721b4461a8e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "3bc77ff2262dcaa0",
+        "type": "serial out",
+        "z": "34204721b4461a8e",
+        "name": "",
+        "serial": "769a444f24265062",
+        "x": 910,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "398a7de48c74f41b",
+        "type": "function",
+        "z": "34204721b4461a8e",
+        "name": "Set RED LED high",
+        "func": "command = [\n    0x1B, //escape\n    0x02, //start of packet\n    0x43, //command ASCII C\n    0x20, //bitmap mask 00100000 for the 5th output: RED LED\n    0xff, //set output high. Same effect as sending 0x02 again.\n    0x1B, //escape\n    0x03  //end of packet\n    ];\n\nmsg.payload = Buffer.from(command);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 1060,
+        "wires": [
+            [
+                "3bc77ff2262dcaa0"
+            ]
+        ]
+    },
+    {
+        "id": "261087ca5f574478",
+        "type": "inject",
+        "z": "34204721b4461a8e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 400,
+        "y": 1060,
+        "wires": [
+            [
+                "398a7de48c74f41b"
+            ]
+        ]
+    },
+    {
+        "id": "1b58d33394f36c22",
+        "type": "serial in",
+        "z": "34204721b4461a8e",
+        "name": "",
+        "serial": "769a444f24265062",
+        "x": 390,
+        "y": 960,
+        "wires": [
+            [
+                "6c5397a89a39371e"
+            ]
+        ]
+    },
+    {
+        "id": "d59fa847f40f527c",
+        "type": "function",
+        "z": "34204721b4461a8e",
+        "name": "Set auto inputs report on ",
+        "func": "command = [\n    0x1b, //escape\n    0x02, //start of packet\n    0x48, //command ASCII H\n    0x7f, //bitmap mask 01111111 for inputs 15-8\n    0x1f, //bitmap mask 00011111 for inputs 7-0\n    0x1b, //escape\n    0x03  //end of packet\n    ];\n\nmsg.payload = Buffer.from(command);\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 1200,
+        "wires": [
+            [
+                "3bc77ff2262dcaa0"
+            ]
+        ]
+    },
+    {
+        "id": "1b766669fd0bf1b4",
+        "type": "inject",
+        "z": "34204721b4461a8e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 400,
+        "y": 1200,
+        "wires": [
+            [
+                "d59fa847f40f527c"
+            ]
+        ]
+    },
+    {
+        "id": "761e71a5c1b58c7b",
+        "type": "function",
+        "z": "34204721b4461a8e",
+        "name": "Set RED LED off",
+        "func": "command = [\n    0x1B, //escape\n    0x02, //start of packet\n    0x43, //command ASCII C\n    0x20, //bitmap mask 00100000 for the 5th output: RED LED\n    0x00, //set output high. Same effect as sending 0x02 again.\n    0x1B, //escape\n    0x03  //end of packet\n    ];\n\nmsg.payload = Buffer.from(command);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 1100,
+        "wires": [
+            [
+                "3bc77ff2262dcaa0"
+            ]
+        ]
+    },
+    {
+        "id": "0b6326202355ff5c",
+        "type": "function",
+        "z": "34204721b4461a8e",
+        "name": "Set auto inputs report off",
+        "func": "command = [\n    0x1b, //escape\n    0x02, //start of packet\n    0x48, //command ASCII H\n    0x00, //bitmap mask 01111111 for inputs 15-8\n    0x00, //bitmap mask 00011111 for inputs 7-0\n    0x1b, //escape\n    0x03  //end of packet\n    ];\n\nmsg.payload = Buffer.from(command);\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 1240,
+        "wires": [
+            [
+                "3bc77ff2262dcaa0"
+            ]
+        ]
+    },
+    {
+        "id": "41103537d14e0495",
+        "type": "inject",
+        "z": "34204721b4461a8e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 400,
+        "y": 1100,
+        "wires": [
+            [
+                "761e71a5c1b58c7b"
+            ]
+        ]
+    },
+    {
+        "id": "e51f34e9c1e87418",
+        "type": "inject",
+        "z": "34204721b4461a8e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 400,
+        "y": 1240,
+        "wires": [
+            [
+                "0b6326202355ff5c"
+            ]
+        ]
+    },
+    {
+        "id": "2967f0b1ca8a475f",
+        "type": "comment",
+        "z": "34204721b4461a8e",
+        "name": "Hello World",
+        "info": "",
+        "x": 230,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "9d255d539c2262fa",
+        "type": "comment",
+        "z": "34204721b4461a8e",
+        "name": "Digital Inputs",
+        "info": "",
+        "x": 230,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "769a444f24265062",
+        "type": "serial-port",
+        "serialport": "/dev/ttyUSB0",
+        "serialbaud": "115200",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "30",
+        "bin": "bin",
+        "out": "time",
+        "addchar": "",
+        "responsetimeout": "10000"
+    }
+]
